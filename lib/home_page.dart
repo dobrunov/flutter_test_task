@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:test_task/user_card.dart';
 import 'package:test_task/user_controller.dart';
 
@@ -41,16 +40,20 @@ class HomePage extends StatelessWidget {
                 ),
               );
             } else {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
+              return NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  if (notification is ScrollEndNotification &&
+                      notification.metrics.pixels >= notification.metrics.maxScrollExtent - 100) {
+                    userController.loadNextPage();
+                  }
+                  return true;
+                },
                 child: ListView.builder(
-                  //
                   itemCount: userController.users.length,
                   itemBuilder: (context, index) {
                     final user = userController.users[index];
                     return UserCard(user: user);
                   },
-                  //
                 ),
               );
             }
