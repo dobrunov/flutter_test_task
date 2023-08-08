@@ -6,6 +6,19 @@ import 'package:test_task/user_model.dart';
 class ApiProvider {
   final String baseUrl = "https://reqres.in/api/users";
 
+  Future<int> getPagesQuantity() async {
+    final response = await http.get(Uri.parse(baseUrl));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final pagesQuantity = data['total_pages'] as int;
+
+      return pagesQuantity;
+    } else {
+      throw Exception('Failed to load pages quantity');
+    }
+  }
+
   Future<List<User>> getUsers({int page = 1}) async {
     final response = await http.get(Uri.parse("$baseUrl?page=$page"));
 

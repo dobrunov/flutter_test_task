@@ -10,6 +10,7 @@ class UserController extends GetxController {
   var users = <User>[].obs;
   var currentPage = 1.obs;
   var isGetting = false.obs;
+  late int pagesQuantity;
 
   @override
   void onInit() {
@@ -21,6 +22,7 @@ class UserController extends GetxController {
     isGetting.value = true;
     try {
       final apiProvider = ApiProvider();
+      pagesQuantity = await apiProvider.getPagesQuantity();
       final userList = await apiProvider.getUsers(page: currentPage.value);
       users.value = userList;
       saveToLocal(userList);
@@ -32,8 +34,10 @@ class UserController extends GetxController {
 
   Future<void> loadNextPage() async {
     if (isGetting.value) return; // Prevent duplicate requests
-    currentPage.value++;
-    await getUsers();
+    if (currentPage < pagesQuantity) {
+      currentPage.value++;
+      await getUsers();
+    }
   }
 
   void saveToLocal(List<User> userList) async {

@@ -8,7 +8,7 @@ class UserCard extends StatelessWidget {
   final User user;
   final double avatarRadius;
 
-  const UserCard({super.key, required this.user, this.avatarRadius = 70.0});
+  const UserCard({super.key, required this.user, this.avatarRadius = 65.0});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class UserCard extends StatelessWidget {
         Get.to(UserDetailPage(user: user));
       },
       child: Padding(
-        padding: const EdgeInsets.only(left: 25.0, top: 20, right: 25),
+        padding: const EdgeInsets.only(left: 24.0, top: 24, right: 24),
         child: Row(
           children: [
             CircleAvatar(
@@ -30,7 +30,7 @@ class UserCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.name,
+                  user.firstName,
                   style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 5.0),

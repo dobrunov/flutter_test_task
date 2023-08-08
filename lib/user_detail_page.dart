@@ -35,13 +35,13 @@ class UserDetailPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0, bottom: 20),
                     child: CircleAvatar(
-                      radius: 85.0,
+                      radius: 120.0,
                       backgroundColor: Colors.transparent,
                       backgroundImage: NetworkImage(userDetails!.avatar),
                     ),
                   ),
                   Text(
-                    userDetails.name,
+                    "${userDetails.firstName} ${userDetails.lastName}",
                     style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 5.0),
