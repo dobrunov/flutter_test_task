@@ -24,11 +24,25 @@ class HomePage extends StatelessWidget {
           () {
             if (userController.users.isEmpty && userController.isGetting.value) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: CircularProgressIndicator(
+                    color: Colors.green,
+                    strokeWidth: 10.0,
+                  ),
+                ),
               );
             } else if (userController.users.isEmpty && !userController.isGetting.value) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: CircularProgressIndicator(
+                    color: Colors.green,
+                    strokeWidth: 10.0,
+                  ),
+                ),
               );
             } else {
               return Padding(

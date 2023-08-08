@@ -35,7 +35,7 @@ class UserDetailPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0, bottom: 20),
                     child: CircleAvatar(
-                      radius: 70.0,
+                      radius: 85.0,
                       backgroundColor: Colors.transparent,
                       backgroundImage: NetworkImage(userDetails!.avatar),
                     ),
