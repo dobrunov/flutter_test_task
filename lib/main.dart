@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:test_task/user_card.dart';
 import 'package:test_task/user_controller.dart';
 
 void main() {
