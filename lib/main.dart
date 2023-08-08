@@ -28,17 +28,20 @@ class HomePage extends StatelessWidget {
               );
             } else if (userController.users.isEmpty && !userController.isGetting.value) {
               return const Center(
-                child: CircularProgressIndicator(), // Loading indicator
+                child: CircularProgressIndicator(),
               );
             } else {
-              return ListView.builder(
-                //
-                itemCount: userController.users.length + 1,
-                itemBuilder: (context, index) {
-                  final user = userController.users[index];
-                  return UserCard(user: user);
-                },
-                //
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: ListView.builder(
+                  //
+                  itemCount: userController.users.length,
+                  itemBuilder: (context, index) {
+                    final user = userController.users[index];
+                    return UserCard(user: user);
+                  },
+                  //
+                ),
               );
             }
           },

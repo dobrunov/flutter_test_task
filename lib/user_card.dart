@@ -6,35 +6,41 @@ import 'package:test_task/user_detail_page.dart';
 
 class UserCard extends StatelessWidget {
   final User user;
+  final double avatarRadius;
 
-  const UserCard({super.key, required this.user});
+  const UserCard({super.key, required this.user, this.avatarRadius = 70.0});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-      child: Card(
-        child: InkWell(
-          onTap: () {
-            Get.to(UserDetailPage(user: user));
-          },
-          child: ListTile(
-            leading: CircleAvatar(
-              radius: 50.0,
+    return InkWell(
+      onTap: () {
+        Get.to(UserDetailPage(user: user));
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 25.0, top: 20, right: 25),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: avatarRadius,
+              backgroundColor: Colors.transparent,
               backgroundImage: NetworkImage(user.avatar),
             ),
-            title: Padding(
-              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-              child: Text(
-                user.name,
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              ),
+            const SizedBox(width: 10.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user.name,
+                  style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 5.0),
+                Text(
+                  user.email,
+                  style: const TextStyle(fontSize: 16.0, color: Colors.grey),
+                ),
+              ],
             ),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-              child: Text(user.email),
-            ),
-          ),
+          ],
         ),
       ),
     );
