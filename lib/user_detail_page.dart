@@ -28,12 +28,34 @@ class UserDetailPage extends StatelessWidget {
             );
           } else {
             final userDetails = snapshot.data;
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(userDetails!.avatar),
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0, bottom: 20),
+                    child: CircleAvatar(
+                      radius: 70.0,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: NetworkImage(userDetails!.avatar),
+                    ),
+                  ),
+                  Text(
+                    userDetails.name,
+                    style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 5.0),
+                  Text(
+                    userDetails.email,
+                    style: const TextStyle(fontSize: 16.0, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 5.0),
+                  Text(
+                    'id: ${userDetails.id.toString()}',
+                    style: const TextStyle(fontSize: 16.0, color: Colors.grey),
+                  ),
+                ],
               ),
-              title: Text(userDetails.name),
-              subtitle: Text(userDetails.email),
             );
           }
         },
