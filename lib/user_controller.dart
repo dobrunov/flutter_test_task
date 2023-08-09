@@ -16,14 +16,25 @@ class UserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getPagesQuantity();
     getUsers();
+  }
+
+  Future<void> getPagesQuantity() async {
+    isGetting.value = true;
+    try {
+      final apiProvider = ApiProvider();
+      pagesQuantity = await apiProvider.getPagesQuantity();
+    } catch (e) {
+      print(e.toString());
+    }
+    isGetting.value = false;
   }
 
   Future<void> getUsers() async {
     isGetting.value = true;
     try {
       final apiProvider = ApiProvider();
-      pagesQuantity = await apiProvider.getPagesQuantity();
       final userList = await apiProvider.getUsers(page: currentPage.value);
       users.value = userList;
       saveToLocal(userList);
