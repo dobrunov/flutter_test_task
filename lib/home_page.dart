@@ -18,7 +18,9 @@ class HomePage extends StatelessWidget {
       }
       if (_scrollController.position.atEdge) {
         if (_scrollController.position.pixels == 0) {
-          userController.loadPreviousPage();
+          Future.delayed(const Duration(seconds: 1), () {
+            userController.loadPreviousPage();
+          });
         }
       }
     });
@@ -55,10 +57,24 @@ class HomePage extends StatelessWidget {
             } else {
               return ListView.builder(
                 controller: _scrollController,
-                itemCount: userController.users.length,
+                itemCount: userController.users.length + 1, // Add 1 for the loading indicator
                 itemBuilder: (context, index) {
-                  final user = userController.users[index];
-                  return UserCard(user: user);
+                  if (index == userController.users.length) {
+                    // Show a loading indicator at the end of the list for pagination
+                    if (userController.isGetting.value) {
+                      Future.delayed(const Duration(seconds: 1), () {});
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.green,
+                        strokeWidth: 10.0,
+                      ));
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  } else {
+                    final user = userController.users[index];
+                    return UserCard(user: user);
+                  }
                 },
               );
             }
