@@ -6,10 +6,23 @@ import 'package:test_task/user_controller.dart';
 class HomePage extends StatelessWidget {
   final UserController userController = Get.put(UserController());
 
-  HomePage({super.key});
+  HomePage({Key? key}) : super(key: key);
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 100) {
+        userController.loadNextPage();
+      }
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels == 0) {
+          userController.loadPreviousPage();
+        }
+      }
+    });
+
     return GetMaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -40,21 +53,13 @@ class HomePage extends StatelessWidget {
                 ),
               );
             } else {
-              return NotificationListener<ScrollNotification>(
-                onNotification: (notification) {
-                  if (notification is ScrollEndNotification &&
-                      notification.metrics.pixels >= notification.metrics.maxScrollExtent - 100) {
-                    userController.loadNextPage();
-                  }
-                  return true;
+              return ListView.builder(
+                controller: _scrollController,
+                itemCount: userController.users.length,
+                itemBuilder: (context, index) {
+                  final user = userController.users[index];
+                  return UserCard(user: user);
                 },
-                child: ListView.builder(
-                  itemCount: userController.users.length,
-                  itemBuilder: (context, index) {
-                    final user = userController.users[index];
-                    return UserCard(user: user);
-                  },
-                ),
               );
             }
           },
