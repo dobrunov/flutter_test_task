@@ -33,18 +33,20 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(StringConstants.userList),
-      ),
-      body: Obx(
-        () {
-          if (userController.isLoading.value || userController.userList.isEmpty) {
-            return const LoadIndicator();
-          } else {
-            return _buildUserList();
-          }
-        },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(StringConstants.userList),
+        ),
+        body: Obx(
+          () {
+            if (userController.isLoading.value || userController.userList.isEmpty) {
+              return const LoadIndicator();
+            } else {
+              return _buildUserList();
+            }
+          },
+        ),
       ),
     );
   }
