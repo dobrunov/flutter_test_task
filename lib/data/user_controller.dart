@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test_task/user_model.dart';
+import '../domain/user_model.dart';
 
 import 'api_provider.dart';
 

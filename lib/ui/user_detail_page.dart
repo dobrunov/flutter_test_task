@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:test_task/user_controller.dart';
-import 'package:test_task/user_model.dart';
+import 'package:test_task/data/user_controller.dart';
+import 'package:test_task/domain/user_model.dart';
 
 class UserDetailPage extends StatelessWidget {
   final User user;

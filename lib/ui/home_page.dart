@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_task/user_card.dart';
-import 'package:test_task/user_controller.dart';
+
+import '../data/user_controller.dart';
+import '../common_widgets/load_indicator.dart';
+import '../common_widgets/user_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,8 +16,6 @@ class _HomePageState extends State<HomePage> {
   final UserController userController = Get.put(UserController());
 
   final ScrollController _scrollController = ScrollController();
-
-  bool isInitialLoad = true;
 
   @override
   void initState() {
@@ -40,27 +40,9 @@ class _HomePageState extends State<HomePage> {
         body: Obx(
           () {
             if (userController.userList.isEmpty && userController.isLoading.value) {
-              return const Center(
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: CircularProgressIndicator(
-                    color: Colors.green,
-                    strokeWidth: 10.0,
-                  ),
-                ),
-              );
+              return const LoadIndicator();
             } else if (userController.userList.isEmpty && !userController.isLoading.value) {
-              return const Center(
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: CircularProgressIndicator(
-                    color: Colors.green,
-                    strokeWidth: 10.0,
-                  ),
-                ),
-              );
+              return const LoadIndicator();
             } else {
               return ListView.builder(
                 controller: _scrollController,
@@ -68,12 +50,8 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   if (index == userController.userList.length) {
                     if (userController.isLoading.value) {
-                      Future.delayed(const Duration(seconds: 1), () {});
-                      return const Center(
-                          child: CircularProgressIndicator(
-                        color: Colors.green,
-                        strokeWidth: 10.0,
-                      ));
+                      Future.delayed(const Duration(seconds: 1));
+                      return const LoadIndicator();
                     } else {
                       return const SizedBox.shrink();
                     }
