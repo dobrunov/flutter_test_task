@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:test_task/user_model.dart';
+import 'package:get/get.dart';
 
-import 'api_provider.dart';
+import 'package:test_task/user_controller.dart';
+import 'package:test_task/user_model.dart';
 
 class UserDetailPage extends StatelessWidget {
   final User user;
-  final ApiProvider apiProvider = ApiProvider();
+  final UserController userController = Get.put(UserController());
 
   UserDetailPage({super.key, required this.user});
 
@@ -16,7 +17,7 @@ class UserDetailPage extends StatelessWidget {
         title: const Text('User Details'),
       ),
       body: FutureBuilder<User>(
-        future: apiProvider.getUserDetails(user.id),
+        future: userController.fetchUserDetails(user.id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

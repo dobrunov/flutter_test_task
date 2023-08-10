@@ -7,69 +7,61 @@ import 'package:test_task/user_model.dart';
 import 'api_provider.dart';
 
 class UserController extends GetxController {
-  var users = <User>[].obs;
+  final ApiProvider _userProvider = ApiProvider();
+  var userList = <User>[].obs;
   var currentPage = 1.obs;
-  var isGetting = false.obs;
-  late int pagesQuantity;
-  var pages = <List<User>>[];
+  var totalPages = 1.obs;
+  var isLoading = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    getPagesQuantity();
-    getUsers();
+  Future<void> fetchUsers() async {
+    if (isLoading.value || currentPage.value > totalPages.value) return;
+
+    isLoading.value = true;
+    try {
+      final response = await _userProvider.getUsers(currentPage.value);
+      final userModel = ApiResponse.fromJson(jsonDecode(response.body));
+
+      if (currentPage.value == 1) {
+        totalPages.value = userModel.totalPages;
+      }
+
+      userList.addAll(userModel.data);
+      currentPage.value++;
+
+      saveUsersLocally(userList);
+    } catch (error) {
+      //
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  Future<void> getPagesQuantity() async {
-    isGetting.value = true;
-    try {
-      final apiProvider = ApiProvider();
-      pagesQuantity = await apiProvider.getPagesQuantity();
-    } catch (e) {
-      print(e.toString());
-    }
-    isGetting.value = false;
-  }
+  Future<User> fetchUserDetails(int userId) async {
+    final response = await _userProvider.getUserDetails(userId);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final user = User.fromJson(data['data']);
 
-  Future<void> getUsers() async {
-    isGetting.value = true;
-    try {
-      final apiProvider = ApiProvider();
-      final userList = await apiProvider.getUsers(page: currentPage.value);
-      users.value = userList;
-      saveToLocal(userList);
-
-      pages.add(userList);
-    } catch (e) {
-      users.value = await loadFromLocal();
+      return user;
+    } else {
+      throw Exception('Failed to load user details');
     }
-    isGetting.value = false;
   }
 
   Future<void> loadNextPage() async {
-    if (isGetting.value) return; // Prevent duplicate requests
-    if (currentPage < pagesQuantity) {
-      currentPage.value++;
-      await getUsers();
-    }
+    await fetchUsers();
   }
 
-  Future<void> loadPreviousPage() async {
-    if (isGetting.value) return; // Prevent duplicate requests
-    if (currentPage.value > 1) {
-      currentPage.value--;
-      if (currentPage.value <= pages.length) {
-        users.value = pages[currentPage.value - 1];
-      } else {
-        await getUsers();
-      }
-    }
-  }
-
-  void saveToLocal(List<User> userList) async {
+  void saveUsersLocally(List<User> userList) async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = json.encode(userList.map((user) => user.toJson()).toList());
     await prefs.setString('userList', jsonString);
+  }
+
+  Future<void> loadUsersLocally() async {
+    userList.clear();
+    final localUsers = await loadFromLocal();
+    userList.addAll(localUsers);
   }
 
   Future<List<User>> loadFromLocal() async {

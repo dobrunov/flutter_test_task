@@ -3,25 +3,30 @@ import 'package:get/get.dart';
 import 'package:test_task/user_card.dart';
 import 'package:test_task/user_controller.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final UserController userController = Get.put(UserController());
 
-  HomePage({Key? key}) : super(key: key);
-
   final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    userController.loadUsersLocally();
+    userController.fetchUsers();
+  }
 
   @override
   Widget build(BuildContext context) {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 100) {
         userController.loadNextPage();
-      }
-      if (_scrollController.position.atEdge) {
-        if (_scrollController.position.pixels == 0) {
-          Future.delayed(const Duration(seconds: 1), () {
-            userController.loadPreviousPage();
-          });
-        }
       }
     });
 
@@ -32,7 +37,7 @@ class HomePage extends StatelessWidget {
         ),
         body: Obx(
           () {
-            if (userController.users.isEmpty && userController.isGetting.value) {
+            if (userController.userList.isEmpty && userController.isLoading.value) {
               return const Center(
                 child: SizedBox(
                   width: 100,
@@ -43,7 +48,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               );
-            } else if (userController.users.isEmpty && !userController.isGetting.value) {
+            } else if (userController.userList.isEmpty && !userController.isLoading.value) {
               return const Center(
                 child: SizedBox(
                   width: 100,
@@ -57,11 +62,11 @@ class HomePage extends StatelessWidget {
             } else {
               return ListView.builder(
                 controller: _scrollController,
-                itemCount: userController.users.length + 1, // Add 1 for the loading indicator
+                itemCount: userController.userList.length + 1, // Add 1 for the loading indicator
                 itemBuilder: (context, index) {
-                  if (index == userController.users.length) {
+                  if (index == userController.userList.length) {
                     // Show a loading indicator at the end of the list for pagination
-                    if (userController.isGetting.value) {
+                    if (userController.isLoading.value) {
                       Future.delayed(const Duration(seconds: 1), () {});
                       return const Center(
                           child: CircularProgressIndicator(
@@ -72,7 +77,7 @@ class HomePage extends StatelessWidget {
                       return const SizedBox.shrink();
                     }
                   } else {
-                    final user = userController.users[index];
+                    final user = userController.userList[index];
                     return UserCard(user: user);
                   }
                 },

@@ -14,7 +14,7 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(UserDetailPage(user: user));
+        Get.to(() => UserDetailPage(user: user));
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 24.0, top: 24, right: 24),
