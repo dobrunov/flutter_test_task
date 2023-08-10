@@ -1,16 +1,7 @@
 # test_task
 
-A new Flutter project.
+Coding time for this project - 11h 40min
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+https://github.com/dobrunov/flutter_test_task/assets/98588940/b64e7b41-af28-420e-895e-676a5d0ff185
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
