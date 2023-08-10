@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-import 'package:test_task/ui/home_page.dart';
+import '../ui/home_page.dart';
+import 'constants/color_styles.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: ColorStyles.teal,
       ),
       home: const HomePage(),
     );
