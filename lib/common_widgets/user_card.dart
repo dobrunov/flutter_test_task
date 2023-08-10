@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../constants/size_styles.dart';
+import '../constants/text_styles.dart';
 import '../domain/user_model.dart';
 import '../ui/user_detail_page.dart';
 
@@ -25,18 +27,18 @@ class UserCard extends StatelessWidget {
               backgroundColor: Colors.transparent,
               backgroundImage: NetworkImage(user.avatar),
             ),
-            const SizedBox(width: 10.0),
+            SizeStyle.sizedBoxWidth10,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   user.firstName,
-                  style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w700),
+                  style: TextStyles.nameTextStyle22Black,
                 ),
-                const SizedBox(height: 5.0),
+                SizeStyle.sizedBoxHeight5,
                 Text(
                   user.email,
-                  style: const TextStyle(fontSize: 16.0, color: Colors.grey),
+                  style: TextStyles.emailTextStyle16Grey,
                 ),
               ],
             ),

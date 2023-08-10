@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:test_task/data/user_controller.dart';
-import 'package:test_task/domain/user_model.dart';
+import '../data/user_controller.dart';
+import '../domain/user_model.dart';
+import '../constants/string_constants.dart';
+
+import '../common_widgets/load_indicator.dart';
+import '../common_widgets/user_profile.dart';
 
 class UserDetailPage extends StatelessWidget {
   final User user;
@@ -14,50 +18,22 @@ class UserDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Details'),
+        title: const Text(StringConstants.userDetails),
       ),
       body: FutureBuilder<User>(
         future: userController.fetchUserDetails(user.id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const LoadIndicator();
+            //
           } else if (snapshot.hasError) {
             return const Center(
-              child: Text('Error getting user details'),
+              child: Text(StringConstants.errorGetDetails),
             );
+            //
           } else {
             final userDetails = snapshot.data;
-            return Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0, bottom: 20),
-                    child: CircleAvatar(
-                      radius: 120.0,
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: NetworkImage(userDetails!.avatar),
-                    ),
-                  ),
-                  Text(
-                    "${userDetails.firstName} ${userDetails.lastName}",
-                    style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 5.0),
-                  Text(
-                    userDetails.email,
-                    style: const TextStyle(fontSize: 16.0, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 5.0),
-                  Text(
-                    'id: ${userDetails.id.toString()}',
-                    style: const TextStyle(fontSize: 16.0, color: Colors.grey),
-                  ),
-                ],
-              ),
-            );
+            return UserProfileWidget(userDetails: userDetails);
           }
         },
       ),

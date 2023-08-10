@@ -9,7 +9,7 @@ class LoadIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
         child: CircularProgressIndicator(
-      color: Colors.green,
+      color: Colors.teal,
       strokeWidth: 10.0,
     ));
   }
