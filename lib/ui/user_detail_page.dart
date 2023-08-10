@@ -16,26 +16,28 @@ class UserDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(StringConstants.userDetails),
-      ),
-      body: FutureBuilder<User>(
-        future: userController.fetchUserDetails(user.id),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LoadIndicator();
-            //
-          } else if (snapshot.hasError) {
-            return const Center(
-              child: Text(StringConstants.errorGetDetails),
-            );
-            //
-          } else {
-            final userDetails = snapshot.data;
-            return UserProfileWidget(userDetails: userDetails);
-          }
-        },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(StringConstants.userDetails),
+        ),
+        body: FutureBuilder<User>(
+          future: userController.fetchUserDetails(user.id),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const LoadIndicator();
+              //
+            } else if (snapshot.hasError) {
+              return const Center(
+                child: Text(StringConstants.errorGetDetails),
+              );
+              //
+            } else {
+              final userDetails = snapshot.data;
+              return UserProfileWidget(userDetails: userDetails);
+            }
+          },
+        ),
       ),
     );
   }
