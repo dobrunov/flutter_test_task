@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,12 +59,6 @@ class UserController extends GetxController {
     await prefs.setString('userList', jsonString);
   }
 
-  Future<void> loadUsersLocally() async {
-    userList.clear();
-    final localUsers = await loadFromLocal();
-    userList.addAll(localUsers);
-  }
-
   Future<List<User>> loadFromLocal() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString('userList');
@@ -73,5 +68,22 @@ class UserController extends GetxController {
       return userList;
     }
     return [];
+  }
+
+  Future<void> loadUsersLocally() async {
+    if (!await isInternetConnected()) {
+      userList.clear();
+      final localUsers = await loadFromLocal();
+      userList.addAll(localUsers);
+    }
+  }
+
+  Future<bool> isInternetConnected() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } on SocketException catch (_) {
+      return false;
+    }
   }
 }

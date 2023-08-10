@@ -15,6 +15,8 @@ class _HomePageState extends State<HomePage> {
 
   final ScrollController _scrollController = ScrollController();
 
+  bool isInitialLoad = true;
+
   @override
   void initState() {
     super.initState();
@@ -62,10 +64,9 @@ class _HomePageState extends State<HomePage> {
             } else {
               return ListView.builder(
                 controller: _scrollController,
-                itemCount: userController.userList.length + 1, // Add 1 for the loading indicator
+                itemCount: userController.userList.length + 1,
                 itemBuilder: (context, index) {
                   if (index == userController.userList.length) {
-                    // Show a loading indicator at the end of the list for pagination
                     if (userController.isLoading.value) {
                       Future.delayed(const Duration(seconds: 1), () {});
                       return const Center(
