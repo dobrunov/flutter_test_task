@@ -1,5 +1,5 @@
 # test_task
-
+Flutter test task with GetX library and pagination
 Coding time for this project - 11h 40min
 
 
